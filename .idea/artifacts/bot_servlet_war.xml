@@ -7,7 +7,7 @@
         <packaging>war</packaging>
       </options>
     </properties>
-    <root id="archive" name="bot_servlet-1.0-SNAPSHOT.war">
+    <root id="archive" name="router.war">
       <element id="artifact" artifact-name="bot_servlet:war exploded" />
     </root>
   </artifact>

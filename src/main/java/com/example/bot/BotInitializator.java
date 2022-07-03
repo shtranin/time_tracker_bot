@@ -9,7 +9,8 @@ import com.example.commands.fromButtons.RegisterGroupCommand;
 import com.example.commands.fromButtons.RemoveGroupCommand;
 import com.example.commands.fromButtons.RemoveTeamLeadCommand;
 import com.example.commands.fromButtons.RemoveTrackCommand;
-import com.example.commands.fromServlet.TestCommand;
+import com.example.commands.fromSOAP.NotificationToLectorCommand;
+import com.example.commands.fromSOAP.TestCommand;
 import com.example.commands.phaseCommand.TakeDescriptionOfTrack;
 import com.example.commands.phaseCommand.TakingSpentTimeForSolution;
 import com.example.commands.specificСommands.AdminCommand;
@@ -26,8 +27,11 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 
 public class BotInitializator {
-  // public static void main(String[] args) throws TelegramApiException {
-   public static void init(){
+    private static NotificationToLectorCommand notificationToLectorCommand;
+    public static NotificationToLectorCommand getNotificationToLectorCommand(){
+        return notificationToLectorCommand;
+    }
+    public static void init() {
         Bot bot = new Bot();
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
@@ -37,36 +41,38 @@ public class BotInitializator {
         }
 
         LastMessageRepository lastMessageRepository = new LastMessageRepository();
-        DeleteMessageService deleteMessageService = new DeleteMessageService(bot,lastMessageRepository);
+        DeleteMessageService deleteMessageService = new DeleteMessageService(bot, lastMessageRepository);
         UpdateLastReceivedMessageService updateLastReceivedMessageService = new UpdateLastReceivedMessageService(lastMessageRepository);
-        SendMessageService sendMessageService = new SendMessageService(bot,updateLastReceivedMessageService);
+        SendMessageService sendMessageService = new SendMessageService(bot, updateLastReceivedMessageService);
         UserService userService = new UserService(sendMessageService);
-        UnknownCommand unknownCommand = new UnknownCommand(sendMessageService,bot);
-        StartCommand startCommand = new StartCommand(userService,sendMessageService);
+        UnknownCommand unknownCommand = new UnknownCommand(sendMessageService, bot);
+        StartCommand startCommand = new StartCommand(userService, sendMessageService);
         TestCommand testCommand = new TestCommand(sendMessageService);
-       TracksService tracksService = new TracksService();
-       GroupService groupService = new GroupService();
-       RegisterDeveloperInGroup registerDeveloperInGroup = new RegisterDeveloperInGroup(groupService, deleteMessageService);
-       AddDeveloperCommand addDeveloperCommand = new AddDeveloperCommand(bot, updateLastReceivedMessageService, userService, deleteMessageService);
-       GetTodayTracksCommand getTodayTracksCommand = new GetTodayTracksCommand(tracksService, bot, deleteMessageService, updateLastReceivedMessageService);
-        RegisterTeamLeadCommand registerTeamLeadCommand = new RegisterTeamLeadCommand(sendMessageService,deleteMessageService);
-        RemoveTeamLeadCommand removeTeamLeadCommand = new RemoveTeamLeadCommand(groupService, sendMessageService,deleteMessageService);
-        RemoveGroupCommand removeGroupCommand = new RemoveGroupCommand(groupService, sendMessageService,deleteMessageService);
-       RemoveTrackCommand removeTrackCommand = new RemoveTrackCommand( sendMessageService,deleteMessageService,tracksService);
-        TakeDescriptionOfTrack takeDescriptionOfTrack = new TakeDescriptionOfTrack(sendMessageService,deleteMessageService);
-       TakingSpentTimeForSolution takingSpentTimeForSolution = new TakingSpentTimeForSolution(tracksService,sendMessageService,deleteMessageService);
+        TracksService tracksService = new TracksService();
+        GroupService groupService = new GroupService();
+        notificationToLectorCommand = new NotificationToLectorCommand(sendMessageService);
+        RegisterDeveloperInGroup registerDeveloperInGroup = new RegisterDeveloperInGroup(groupService, deleteMessageService);
+        AddDeveloperCommand addDeveloperCommand = new AddDeveloperCommand(bot, updateLastReceivedMessageService, userService, deleteMessageService);
+        GetTodayTracksCommand getTodayTracksCommand = new GetTodayTracksCommand(tracksService, bot, deleteMessageService, updateLastReceivedMessageService);
+        RegisterTeamLeadCommand registerTeamLeadCommand = new RegisterTeamLeadCommand(sendMessageService, deleteMessageService);
+        RemoveTeamLeadCommand removeTeamLeadCommand = new RemoveTeamLeadCommand(groupService, sendMessageService, deleteMessageService);
+        RemoveGroupCommand removeGroupCommand = new RemoveGroupCommand(groupService, sendMessageService, deleteMessageService);
+        RemoveTrackCommand removeTrackCommand = new RemoveTrackCommand(sendMessageService, deleteMessageService, tracksService);
+        TakeDescriptionOfTrack takeDescriptionOfTrack = new TakeDescriptionOfTrack(sendMessageService, deleteMessageService);
+        TakingSpentTimeForSolution takingSpentTimeForSolution = new TakingSpentTimeForSolution(tracksService, sendMessageService, deleteMessageService);
         CreateGroupCommand createGroupCommand = new CreateGroupCommand(sendMessageService, deleteMessageService);
-       CreateTrackCommand createTrackCommand = new CreateTrackCommand(sendMessageService,deleteMessageService);
-        RegisterGroupCommand registerGroupCommand = new RegisterGroupCommand(groupService, sendMessageService,deleteMessageService);
-        DeleteTeamLeadCommand deleteTeamLeadCommand = new DeleteTeamLeadCommand(bot,sendMessageService,deleteMessageService,updateLastReceivedMessageService);
-        CreateTeamLeadCommand createTeamLeadCommand = new CreateTeamLeadCommand(bot,updateLastReceivedMessageService,deleteMessageService);
-        AdminCommand adminCommand = new AdminCommand(deleteMessageService,bot,updateLastReceivedMessageService,sendMessageService);
+        CreateTrackCommand createTrackCommand = new CreateTrackCommand(sendMessageService, deleteMessageService);
+        RegisterGroupCommand registerGroupCommand = new RegisterGroupCommand(groupService, sendMessageService, deleteMessageService);
+        DeleteTeamLeadCommand deleteTeamLeadCommand = new DeleteTeamLeadCommand(bot, sendMessageService, deleteMessageService, updateLastReceivedMessageService);
+        CreateTeamLeadCommand createTeamLeadCommand = new CreateTeamLeadCommand(bot, updateLastReceivedMessageService, deleteMessageService);
+        AdminCommand adminCommand = new AdminCommand(deleteMessageService, bot, updateLastReceivedMessageService, sendMessageService);
         DeleteGroupCommand deleteGroupCommand = new DeleteGroupCommand(bot, deleteMessageService, updateLastReceivedMessageService);
-        MenuCommand menuCommand = new MenuCommand(bot,updateLastReceivedMessageService,deleteMessageService);
-        CommandContainer container = new CommandContainer(unknownCommand,startCommand,menuCommand,adminCommand,deleteGroupCommand,testCommand,createTeamLeadCommand,registerTeamLeadCommand,removeTeamLeadCommand,removeGroupCommand,createGroupCommand,deleteTeamLeadCommand,
-                registerGroupCommand,createTrackCommand,takeDescriptionOfTrack,takingSpentTimeForSolution,getTodayTracksCommand,removeTrackCommand,addDeveloperCommand,registerDeveloperInGroup);
+        MenuCommand menuCommand = new MenuCommand(bot, updateLastReceivedMessageService, deleteMessageService);
+        CommandContainer container = new CommandContainer(unknownCommand, startCommand, menuCommand, adminCommand, deleteGroupCommand, testCommand, createTeamLeadCommand, registerTeamLeadCommand, removeTeamLeadCommand, removeGroupCommand, createGroupCommand, deleteTeamLeadCommand,
+                registerGroupCommand, createTrackCommand, takeDescriptionOfTrack, takingSpentTimeForSolution, getTodayTracksCommand, removeTrackCommand, addDeveloperCommand, registerDeveloperInGroup);
         Bot.initContainer(container);
 
     }
-    }
+}
+
 

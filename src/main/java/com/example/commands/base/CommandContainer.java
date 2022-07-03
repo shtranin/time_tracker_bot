@@ -6,7 +6,7 @@ import com.example.commands.fromButtons.RegisterGroupCommand;
 import com.example.commands.fromButtons.RemoveGroupCommand;
 import com.example.commands.fromButtons.RemoveTeamLeadCommand;
 import com.example.commands.fromButtons.RemoveTrackCommand;
-import com.example.commands.fromServlet.TestCommand;
+import com.example.commands.fromSOAP.TestCommand;
 import com.example.commands.phaseCommand.TakeDescriptionOfTrack;
 import com.example.commands.phaseCommand.TakingSpentTimeForSolution;
 import com.example.commands.specificСommands.AdminCommand;

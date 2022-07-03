@@ -1,16 +1,20 @@
 package com.example.services.withDB;
 
 import com.example.models.Group;
+import com.example.soap.client.SoapClientForTeamService;
+
 
 public class GroupService {
 
+
+    public GroupService() {
+    }
+
     public void sendGroup(Group group){
-        //TODO create new group in db (Group)
-        System.out.println("group added");
+        new SoapClientForTeamService().createGroup(group);
     }
     public void removeGroupByTeamLeadId(Long userId){
-        //TODO remove group by TeamLeadId (Long teamleadId)
-        System.out.println("group removed");
+        new SoapClientForTeamService().removeGroup(userId);
     }
     public void addUserInGroup(Long userId,int groupId){
         //TODO add user in group (Long userId,int groupId)

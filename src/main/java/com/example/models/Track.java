@@ -4,18 +4,6 @@ import java.util.Date;
 
 public class Track {
     private int id;
-
-    public Track() {
-    }
-
-    public Track(String description) {
-        this.description = description;
-    }
-
-    public int getId() {
-        return id;
-    }
-
     private Date date;
     private int spendHours;
     private String description;
@@ -31,7 +19,16 @@ public class Track {
                 ", userId=" + userId +
                 '}';
     }
+    public Track() {
+    }
 
+    public Track(String description) {
+        this.description = description;
+    }
+
+    public int getId() {
+        return id;
+    }
     public Date getDate() {
         return date;
     }
