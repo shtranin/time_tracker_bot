@@ -1,7 +1,6 @@
 package com.example.clearing_old_messages;
 
 import com.example.bot.Bot;
-import com.example.clearing_old_messages.LastMessageRepository;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 

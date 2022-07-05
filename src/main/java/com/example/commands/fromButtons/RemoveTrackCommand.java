@@ -26,8 +26,8 @@ public class RemoveTrackCommand implements Command {
         int trackId = Integer.parseInt(update.getCallbackQuery().getData().split(" ")[1]);
         tracksService.removeTrackById(trackId);
 
-        Redirector.redirect("/menu",update);
-        sendMessageService.sendMessage(userId,"Трек удален");
+        Redirector.redirect("/get_tracks",update);
+
 
     }
 }

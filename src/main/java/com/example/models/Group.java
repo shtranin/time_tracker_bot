@@ -1,12 +1,22 @@
 package com.example.models;
 
-public class Group {
+import jakarta.xml.bind.annotation.*;
+
+@XmlRootElement(name = "group")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class  Group {
+    @XmlElement(name="id")
     private int id;
+    @XmlElement(name="color")
     private String color;
+    @XmlElement(name="teamLeadId")
     private long teamLeadId;
 
     public int getId() {
         return id;
+    }
+
+    public Group() {
     }
 
     public void setId(int id) {

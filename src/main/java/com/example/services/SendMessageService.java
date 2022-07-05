@@ -20,15 +20,22 @@ public class SendMessageService{
 
 
     public void sendMessage(Long userId,String message) {
+            int becameMessageId = send(userId,message);
+            updateLastReceivedMessageService.update(userId,becameMessageId);
+    }
+    public void sendMessage(Long userId,String message,boolean updateLastMessageId){
+        send(userId,message);
+    }
+    private int send(Long userId, String message){
         SendMessage sm = new SendMessage();
         sm.setChatId(userId.toString());
         sm.setText(message);
+        Message becameMessage = null;
         try {
-            Message becameMessage =  bot.execute(sm);
-            updateLastReceivedMessageService.update(userId,becameMessage.getMessageId());
+            becameMessage =  bot.execute(sm);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-
+        return becameMessage.getMessageId();
     }
 }

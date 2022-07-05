@@ -6,7 +6,6 @@ import com.example.soap.client.SoapClientForTeamService;
 
 public class GroupService {
 
-
     public GroupService() {
     }
 
@@ -17,7 +16,9 @@ public class GroupService {
         new SoapClientForTeamService().removeGroup(userId);
     }
     public void addUserInGroup(Long userId,int groupId){
-        //TODO add user in group (Long userId,int groupId)
-        System.out.println("user added in group");
+       new SoapClientForTeamService().addUserInGroup(userId,groupId);
+    }
+    public Group getGroupIdByTeamLeadId(Long userId){
+        return new SoapClientForTeamService().getGroupIdByUserId(userId);
     }
 }

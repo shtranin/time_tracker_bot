@@ -6,8 +6,9 @@ import com.example.clearing_old_messages.DeleteMessageService;
 import com.example.clearing_old_messages.UpdateLastReceivedMessageService;
 import com.example.commands.base.Command;
 import com.example.commands.base.Redirector;
-import com.example.models.User;
 import com.example.services.SendMessageService;
+import com.example.teamLeadsManager.TeamLeadsManager;
+import com.example.teamLeadsManager.model.TeamLead;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -23,12 +24,14 @@ public class DeleteTeamLeadCommand implements Command {
     private final SendMessageService sendMessageService;
     private final DeleteMessageService deleteMessageService;
     private final UpdateLastReceivedMessageService updateLastReceivedMessageService;
+    private final TeamLeadsManager teamLeadsManager;
 
-    public DeleteTeamLeadCommand(Bot bot,SendMessageService sendMessageService,DeleteMessageService deleteMessageService,UpdateLastReceivedMessageService updateLastReceivedMessageService) {
+    public DeleteTeamLeadCommand(Bot bot, SendMessageService sendMessageService, DeleteMessageService deleteMessageService, UpdateLastReceivedMessageService updateLastReceivedMessageService, TeamLeadsManager teamLeadsManager) {
         this.bot = bot;
         this.sendMessageService = sendMessageService;
         this.deleteMessageService = deleteMessageService;
         this.updateLastReceivedMessageService = updateLastReceivedMessageService;
+        this.teamLeadsManager = teamLeadsManager;
     }
 
 
@@ -37,7 +40,8 @@ public class DeleteTeamLeadCommand implements Command {
     public void execute(Update update) {
         Long userId = Bot.getPlayerIdFromUpdate(update);
         deleteMessageService.deleteMessages(userId);
-        List<User> users = Bot.getTeamLeads();
+        //List<User> users = Bot.getTeamLeads();
+        List<TeamLead> users = teamLeadsManager.findAll();
         if(users.isEmpty()){
             Redirector.redirect("/admin",update);
             sendMessageService.sendMessage(userId,"Тимлидов пока нет :)");
@@ -46,10 +50,10 @@ public class DeleteTeamLeadCommand implements Command {
 
 
         List<List<InlineKeyboardButton>> overList = new ArrayList<>();
-        for (User user : users) {
+        for (TeamLead user : users) {
             InlineKeyboardButton userButton = new InlineKeyboardButton();
             userButton.setText(user.getFirstName() + " " + user.getLastName());
-            userButton.setCallbackData("/remove_teamlead " + user.getId());
+            userButton.setCallbackData("/remove_teamlead " + user.getTelegramId());
 
             List<InlineKeyboardButton> list = new ArrayList<>();
             list.add(userButton);

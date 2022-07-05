@@ -3,7 +3,7 @@ package com.example.commands.phaseCommand;
 import com.example.bot.Bot;
 import com.example.clearing_old_messages.DeleteMessageService;
 import com.example.commands.base.Command;
-import com.example.models.BufferForCreatingTrackInFewSteps;
+import com.example.util.BufferForCreatingTrackInFewSteps;
 import com.example.services.SendMessageService;
 import com.example.userStatementManager.Statements;
 import com.example.userStatementManager.UserStatementManager;

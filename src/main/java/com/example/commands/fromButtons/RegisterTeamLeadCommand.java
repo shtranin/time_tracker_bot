@@ -6,15 +6,19 @@ import com.example.commands.base.Command;
 import com.example.commands.base.Redirector;
 import com.example.models.User;
 import com.example.services.SendMessageService;
+import com.example.teamLeadsManager.TeamLeadsManager;
+import com.example.teamLeadsManager.model.TeamLead;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class RegisterTeamLeadCommand implements Command {
-    private SendMessageService sendMessageService;
-    private DeleteMessageService deleteMessageService;
+    private final SendMessageService sendMessageService;
+    private final DeleteMessageService deleteMessageService;
+    private final TeamLeadsManager teamLeadsManager;
 
-    public RegisterTeamLeadCommand(SendMessageService sendMessageService,DeleteMessageService deleteMessageService) {
+    public RegisterTeamLeadCommand(SendMessageService sendMessageService, DeleteMessageService deleteMessageService, TeamLeadsManager teamLeadsManager) {
         this.sendMessageService = sendMessageService;
         this.deleteMessageService = deleteMessageService;
+        this.teamLeadsManager = teamLeadsManager;
     }
 
     @Override
@@ -25,9 +29,9 @@ public class RegisterTeamLeadCommand implements Command {
         Long teamLeadId = Long.parseLong(data[1]);
         String firstName = data[2];
         String lastName = data[3];
-        Bot.getTeamLeads().add(new User(teamLeadId,firstName,lastName));
-        Redirector.redirect("/admin",update);
+        teamLeadsManager.save(new TeamLead(teamLeadId,firstName,lastName,false));
+        Redirector.redirect("/create_teamlead",update);
         sendMessageService.sendMessage(userId,firstName + " " + lastName + " зарегистрирован как тимлид");
-        //TODO add teamlead to mongo
+
     }
 }

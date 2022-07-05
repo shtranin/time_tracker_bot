@@ -3,27 +3,28 @@ package com.example.services.withDB;
 import com.example.bot.Bot;
 import com.example.models.User;
 import com.example.services.SendMessageService;
+import com.example.soap.client.SoapClientForTeamService;
+import com.example.teamLeadsManager.TeamLeadsManager;
+import com.example.teamLeadsManager.model.TeamLead;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class UserService {
     private final SendMessageService sendMessageService;
+    private final TeamLeadsManager teamLeadsManager;
 
-    public UserService(SendMessageService sendMessageService) {
+    public UserService(SendMessageService sendMessageService, TeamLeadsManager teamLeadsManager) {
         this.sendMessageService = sendMessageService;
+        this.teamLeadsManager = teamLeadsManager;
     }
 
     public List<User> getDevelopersList(int groupId){
-        //TODO get list of developers not from groudId (int groupID)
-
-        List<User> developers = new ArrayList<>();
-        User user = new User(1,"shrek","fiona");
-        User user2 = new User(1,"peter","parker");
-        developers.add(user);
-        developers.add(user2);
+        List<User> developers = new SoapClientForTeamService().getDevelopersList(groupId);
         return developers;
     }
 
@@ -33,8 +34,13 @@ public class UserService {
         String lastName = update.getMessage().getFrom().getLastName();
 
         User user = new User(userId,firstName,lastName);
-        //TODO create user in database (User)
+        new SoapClientForTeamService().createUser(user);
 
-        sendMessageService.sendMessage(userId,"user created");
+    }
+    public List<User> getUsersNotTeamleads(){
+        List<User> users = new SoapClientForTeamService().getUsersNotLeamleads();
+        Set<Long> teamLeads = teamLeadsManager.findAll().stream().map(TeamLead::getTelegramId).collect(Collectors.toSet());
+           return users.stream().filter(x -> !teamLeads.contains(x.getTelegramId())).collect(Collectors.toList());
+
     }
 }

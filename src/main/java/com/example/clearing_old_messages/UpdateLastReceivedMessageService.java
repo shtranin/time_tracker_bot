@@ -1,11 +1,7 @@
 package com.example.clearing_old_messages;
 
 public class UpdateLastReceivedMessageService {
-    private LastMessageRepository lastMessageRepository;
-
-
-
-
+    private final LastMessageRepository lastMessageRepository;
 
     public UpdateLastReceivedMessageService(LastMessageRepository lastMessageRepository) {
     this.lastMessageRepository = lastMessageRepository;

@@ -1,22 +1,24 @@
-package com.example.models;
+package com.example.util;
+
+import com.example.models.Track;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class BufferForCreatingTrackInFewSteps {
-    private static Map<Long,Track> bufferForTracks = new HashMap<>();
+    private static final Map<Long, Track> bufferForTracks = new HashMap<>();
 
     public static void setBufferedTrackDescription(Long userId, String description){
         Track track = new Track();
         track.setUserId(userId);
         track.setDescription(description);
-        track.setDate(new Date());
+
         bufferForTracks.put(userId,track);
     }
     public static void setBufferForTrackSpentHours(Long userid,int hours){
         Track track = bufferForTracks.get(userid);
-        track.setSpendHours(hours);
+        track.setSpentHours(hours);
         bufferForTracks.put(userid,track);
     }
     public static Track getTrackAndDeleteFromBuffed(Long userId){

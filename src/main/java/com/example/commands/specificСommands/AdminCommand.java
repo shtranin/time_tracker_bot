@@ -8,6 +8,7 @@ import com.example.commands.base.Command;
 import com.example.models.User;
 import com.example.services.SendMessageService;
 
+import com.example.teamLeadsManager.TeamLeadsManager;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -23,26 +24,31 @@ public class AdminCommand implements Command {
     private final DeleteMessageService deleteMessageService;
     private final UpdateLastReceivedMessageService updateLastReceivedMessageService;
     private final SendMessageService sendMessageService;
+    private final TeamLeadsManager teamLeadsManager;
 
-    public AdminCommand(DeleteMessageService deleteMessageService,Bot bot,UpdateLastReceivedMessageService updateLastReceivedMessageService,SendMessageService sendMessageService) {
+    public AdminCommand(DeleteMessageService deleteMessageService, Bot bot, UpdateLastReceivedMessageService updateLastReceivedMessageService, SendMessageService sendMessageService, TeamLeadsManager teamLeadsManager) {
         this.deleteMessageService = deleteMessageService;
         this.bot = bot;
         this.updateLastReceivedMessageService = updateLastReceivedMessageService;
         this.sendMessageService = sendMessageService;
+        this.teamLeadsManager = teamLeadsManager;
     }
 
     @Override
     public void execute(Update update) {
         long userId = Bot.getPlayerIdFromUpdate(update);
         boolean userIsLector = Bot.getLectorId().equals(userId);
-        boolean userIsTeamLead = false;
-        boolean leadHasAGroup = Bot.leadHasAGroup(userId);
-        for (User user : Bot.getTeamLeads()){
-            if(user.getId() == userId){
-                userIsTeamLead = true;
-                break;
-            }
+        boolean userIsTeamLead = teamLeadsManager.isUserTeamLead(userId);
+        boolean leadHasAGroup = false;
+        if(userIsTeamLead){
+            leadHasAGroup = teamLeadsManager.leadHasGroup(userId);
         }
+//        for (User user : Bot.getTeamLeads()){
+//            if(user.getTelegramId() == userId){
+//                userIsTeamLead = true;
+//                break;
+//            }
+//        }
 
         if(!userIsTeamLead && !userIsLector){
             sendMessageService.sendMessage(userId,"Вы не являетесь лектором или тимлидом");
@@ -90,15 +96,16 @@ public class AdminCommand implements Command {
                 List<InlineKeyboardButton> list = new ArrayList<>();
                 list.add(createGroup);
 
-                InlineKeyboardButton menu = new InlineKeyboardButton();
-                menu.setText("К меню");
-                menu.setCallbackData("/menu");
-                List<InlineKeyboardButton> listMenu = new ArrayList<>();
-                listMenu.add(menu);
-
                 overList.add(list);
-                overList.add(listMenu);
             }
+            InlineKeyboardButton menu = new InlineKeyboardButton();
+            menu.setText("К меню");
+            menu.setCallbackData("/menu");
+            List<InlineKeyboardButton> listMenu = new ArrayList<>();
+            listMenu.add(menu);
+
+
+            overList.add(listMenu);
         }
 
 

@@ -7,10 +7,12 @@ import java.util.Set;
 
 public class LastMessageRepository {
 
-    private Map<Long, Set<Integer>> lastUsersMessages;
+    private final Map<Long, Set<Integer>> lastUsersMessages;
+
     {
         lastUsersMessages = new HashMap<>();
     }
+
     public void addMessageId(Long userId,Integer messageId){
         if(!lastUsersMessages.containsKey(userId)){
             lastUsersMessages.put(userId,new HashSet<>());

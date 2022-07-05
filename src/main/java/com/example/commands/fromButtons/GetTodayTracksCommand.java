@@ -38,7 +38,7 @@ public class GetTodayTracksCommand implements Command {
         List<List<InlineKeyboardButton>> overList = new ArrayList<>();
         for (Track track : tracks) {
             InlineKeyboardButton trackButton = new InlineKeyboardButton();
-            trackButton.setText(track.getDescription() + " затрачено времени: " + track.getSpendHours());
+            trackButton.setText(track.getDescription() + " затрачено времени: " + track.getSpentHours());
             trackButton.setCallbackData("/remove_track "+ track.getId());
 
             List<InlineKeyboardButton> list = new ArrayList<>();

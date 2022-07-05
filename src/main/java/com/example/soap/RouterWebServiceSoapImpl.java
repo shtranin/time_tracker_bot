@@ -1,9 +1,8 @@
 package com.example.soap;
 
-import com.example.bot.Bot;
 import com.example.bot.BotInitializator;
-import com.example.commands.fromSOAP.TestCommand;
-import com.example.models.User;
+import com.example.bot.LectorId;
+import com.example.soap.model.ExpiredUsers;
 import jakarta.jws.WebService;
 
 
@@ -11,16 +10,19 @@ import jakarta.jws.WebService;
         portName = "routerPort",
         serviceName = "routerService")
 public class RouterWebServiceSoapImpl implements RouterWebServiceSoap {
+    private static Long lectorId;
     static{
         BotInitializator.init();
+        lectorId = LectorId.getId();
     }
+
     @Override
-    public User[] addUncheckedMembers(User[] members) {
+    public void sendExpiredUsersToLector(ExpiredUsers users) {
+            BotInitializator.getNotificationCommand().execute(users,lectorId);
+    }
 
-        TestCommand testCommand =  (TestCommand)Bot.getContainer().receiveCommand("/test");
-        testCommand.execute(members);
-
-
-        return new User[0];
+    @Override
+    public void sendExpiredUsersToTeamLead(ExpiredUsers users) {
+            BotInitializator.getNotificationCommand().execute(users, users.getOwnerId());
     }
 }

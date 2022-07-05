@@ -3,103 +3,101 @@ package com.example.services.withDB;
 import com.example.commands.base.Redirector;
 import com.example.models.Track;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TracksService {
 
-    private static HttpURLConnection getConnection(){
-        HttpURLConnection connection;
+    private HttpURLConnection connection;
+
+    public void sendTrack(Track track) {
         try {
-            URL url = new URL("http://localhost:8080/test//tracks?userId=1");
+            URL url = new URL("http://localhost:8085/test/tracks");
             connection = (HttpURLConnection) url.openConnection();
-            return connection;
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
-    public void sendTrack(Track track){
-        //TODO
-        HttpURLConnection connection = getConnection();
-        BufferedReader reader;
-        String line;
-        StringBuilder sb;
-        try {
             connection.setRequestMethod("POST");
-            ObjectMapper mapper = new ObjectMapper();
-            String trackAsString = mapper.writeValueAsString(track);
+            connection.setConnectTimeout(900000000);
             connection.setDoOutput(true);
-            System.out.println(connection.getResponseCode());
-
-            try(OutputStream os = connection.getOutputStream()) {
-                byte[] input = trackAsString.getBytes("utf-8");
-                os.write(input, 0, input.length);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
 
-        } catch (ProtocolException | JsonProcessingException e) {
-            e.printStackTrace();
-            System.out.println("exception");
+                ObjectMapper mapper = new ObjectMapper();
+                try (OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream())) {
+                    writer.write(mapper.writeValueAsString(track));
+                    writer.flush();
+                }
+            connection.getResponseCode();
         } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
+            throw new RuntimeException(e);
+        } finally {
             connection.disconnect();
         }
-        System.out.println(track);
+
     }
-    public List<Track> getTodayTracks(Long userId){
-        HttpURLConnection connection;
-        //BufferedReader reader;
-        String line;
-        StringBuilder sb;
-        try{
-            connection = getConnection();
+
+    public List<Track> getTodayTracks(Long userId) {
+        List<Track> tracks;
+        try {
+            URL url = new URL("http://localhost:8085/test//tracks?userId=" + userId);
+            connection = (HttpURLConnection) url.openConnection();
+            tracks = new ArrayList<>();
             connection.setRequestMethod("GET");
             connection.setConnectTimeout(5000);
-
-            int status = connection.getResponseCode();
-
-            if(status < 299){
-
-                ObjectMapper objectMapper = new ObjectMapper();
-            }
-            connection.disconnect();
-        } catch (ProtocolException e) {
-            e.printStackTrace();
+            connection.connect();
+           // if (HttpURLConnection.HTTP_OK == connection.getResponseCode()) {
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                    String inputLine;
+                    StringBuilder stringBuilder = new StringBuilder();
+                    while ((inputLine = reader.readLine()) != null) {
+                        stringBuilder.append(inputLine);
+                    }
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    tracks = objectMapper.readValue(stringBuilder.toString(), new TypeReference<List<Track>>() {
+                    });
+               }
+//            } else {
+//                InputStream errorStream = connection.getErrorStream();
+//                toConsole(errorStream);
+//            }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
+        } finally {
+            connection.disconnect();
         }
-        //TODO get list of today tracks by userId (Long userId)
-        List<Track> list = new ArrayList<>();
-        Track track = new Track("track1");
-        Track track2 = new Track("track2");
-        list.add(track);
-        list.add(track2);
-        return list;
+        return tracks;
     }
-    public void removeTrackById(int trackId){
-        //TODO remove track by id (int trackId)
-        System.out.println("track removed");
+
+    public void removeTrackById(int trackId) {
+        try {
+            URL url = new URL("http://localhost:8085/test//tracks?trackId=" + trackId);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("DELETE");
+            connection.setConnectTimeout(5000);
+            connection.connect();
+            if (HttpURLConnection.HTTP_OK != connection.getResponseCode()) {
+                InputStream errorStream = connection.getErrorStream();
+                toConsole(errorStream);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            connection.disconnect();
+        }
+    }
 
 
+    private void toConsole(InputStream errorStream) {
+        String result = new BufferedReader(new InputStreamReader(errorStream))
+                .lines().collect(Collectors.joining("\n"));
+        System.out.println(result);
     }
+
 }

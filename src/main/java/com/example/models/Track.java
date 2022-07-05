@@ -3,22 +3,13 @@ package com.example.models;
 import java.util.Date;
 
 public class Track {
-    private int id;
-    private Date date;
-    private int spendHours;
+    private Long id;
+   // private Date date;
+    private int spentHours;
     private String description;
-    private long userId;
+    private Long userId;
 
-    @Override
-    public String toString() {
-        return "Track{" +
-                "id= ni" +
-                ", date=" + date +
-                ", spendHours=" + spendHours +
-                ", description='" + description + '\'' +
-                ", userId=" + userId +
-                '}';
-    }
+
     public Track() {
     }
 
@@ -26,23 +17,23 @@ public class Track {
         this.description = description;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
-    public Date getDate() {
-        return date;
+//    public Date getDate() {
+//        return date;
+//    }
+//
+//    public void setDate(Date date) {
+//        this.date = date;
+//    }
+
+    public int getSpentHours() {
+        return spentHours;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public int getSpendHours() {
-        return spendHours;
-    }
-
-    public void setSpendHours(int spendHours) {
-        this.spendHours = spendHours;
+    public void setSpentHours(int spentHours) {
+        this.spentHours = spentHours;
     }
 
     public String getDescription() {
@@ -53,7 +44,7 @@ public class Track {
         this.description = description;
     }
 
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 

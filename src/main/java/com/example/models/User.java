@@ -9,39 +9,40 @@ import java.util.Date;
 
 @XmlRootElement(name = "user")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "user", propOrder = {"id", "firstName", "lastName", "lastTrack"})
+@XmlType(name = "user", propOrder = {"telegramId", "firstName", "lastName", "lastmodified"})
 public class User {
-    private long id;
+
+    private long telegramId;
     private String firstName;
     private String lastName;
-    private Date lastTrack;
+    private Date lastmodified;
 
-    public User(long id, String firstName, String lastName) {
-        this.id = id;
+    public User(long telegramId, String firstName, String lastName) {
+        this.telegramId = telegramId;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.lastTrack = null;
+        this.lastmodified = null;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "id=" + telegramId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", lastTrack=" + lastTrack +
+                ", lastTrack=" + lastmodified +
                 '}';
     }
 
     public User() {
     }
 
-    public long getId() {
-        return id;
+    public long getTelegramId() {
+        return telegramId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setTelegramId(long telegramId) {
+        this.telegramId = telegramId;
     }
 
     public String getFirstName() {
@@ -60,11 +61,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Date getLastTrack() {
-        return lastTrack;
+    public Date getLastmodified() {
+        return lastmodified;
     }
 
-    public void setLastTrack(Date lastTrack) {
-        this.lastTrack = lastTrack;
+    public void setLastmodified(Date lastmodified) {
+        this.lastmodified = lastmodified;
     }
 }
