@@ -6,7 +6,6 @@ import com.example.models.User;
 import com.example.services.SendMessageService;
 import com.example.soap.model.ExpiredUsers;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class NotificationCommand {
@@ -26,14 +25,14 @@ public class NotificationCommand {
             introduceLine = "Разработчики, которые сегодня не трекали время:\n";
         }
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM");
+
         StringBuilder builder = new StringBuilder();
         builder.append(introduceLine);
 
 
        List<User> expiredUsers =  users.getExpiredUsers();
        for (User user : expiredUsers){
-           builder.append(user.getFirstName() + " " + user.getLastName() + "последний трек - " + formatter.format(user.getLastmodified())+ "\n");
+           builder.append(user.getFirstName() + " " + user.getLastName() + " последний трек - " + user.getLastModified() + "\n");
        }
        sendMessageService.sendMessage(receiverId,builder.toString());
 

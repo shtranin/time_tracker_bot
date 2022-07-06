@@ -8,7 +8,7 @@
       </options>
     </properties>
     <root id="archive" name="router.war">
-      <element id="artifact" artifact-name="bot_servlet:war exploded" />
+      <element id="artifact" artifact-name="router" />
     </root>
   </artifact>
 </component>

@@ -23,4 +23,6 @@ public interface RouterWebServiceSoap {
     @WebMethod(action = "sendExpiredUsersToTeamLead")
     @WebResult(name = "users", partName = "users")
     void sendExpiredUsersToTeamLead(@WebParam(name = "expiredUsersWithOwner")ExpiredUsers users);
+
+
 }

@@ -5,5 +5,11 @@
     <endpoint
             name="RouterWebServiceSoap"
             implementation="com.example.soap.RouterWebServiceSoapImpl"
-            url-pattern="/soap"/>
+            url-pattern="/soap/notificator"/>
+
+    <endpoint
+            name="RouterWebServiceForSender"
+            implementation="com.example.soap.RouterWebServiceForSenderImpl"
+            url-pattern="/soap/sender"/>
+
 </endpoints>

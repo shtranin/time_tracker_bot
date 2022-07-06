@@ -10,6 +10,7 @@ import com.example.commands.fromButtons.RemoveGroupCommand;
 import com.example.commands.fromButtons.RemoveTeamLeadCommand;
 import com.example.commands.fromButtons.RemoveTrackCommand;
 import com.example.commands.fromSOAP.NotificationCommand;
+import com.example.commands.fromSOAP.SendReportsCommand;
 import com.example.commands.phaseCommand.TakeDescriptionOfTrack;
 import com.example.commands.phaseCommand.TakingSpentTimeForSolution;
 import com.example.commands.specificСommands.AdminCommand;
@@ -29,9 +30,11 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 public class BotInitializator {
     private static NotificationCommand notificationCommand;
+    private static SendReportsCommand sendReportsCommand;
     public static NotificationCommand getNotificationCommand(){
         return notificationCommand;
     }
+    public static SendReportsCommand getSendReportsCommand(){return sendReportsCommand;}
 
     public static void init() {
         Bot bot = new Bot();
@@ -53,6 +56,7 @@ public class BotInitializator {
         TracksService tracksService = new TracksService();
         GroupService groupService = new GroupService();
         notificationCommand = new NotificationCommand(sendMessageService);
+        sendReportsCommand = new SendReportsCommand(bot);
         RegisterDeveloperInGroup registerDeveloperInGroup = new RegisterDeveloperInGroup(groupService, deleteMessageService);
         AddDeveloperCommand addDeveloperCommand = new AddDeveloperCommand(bot, updateLastReceivedMessageService, userService, groupService, deleteMessageService, sendMessageService);
         GetTodayTracksCommand getTodayTracksCommand = new GetTodayTracksCommand(tracksService, bot, deleteMessageService, updateLastReceivedMessageService);

@@ -5,32 +5,30 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-import java.util.Date;
-
 @XmlRootElement(name = "user")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "user", propOrder = {"telegramId", "firstName", "lastName", "lastmodified"})
+@XmlType(name = "user", propOrder = {"telegramId", "firstName", "lastName", "lastModified"})
 public class User {
 
     private long telegramId;
     private String firstName;
     private String lastName;
-    private Date lastmodified;
+    private String lastModified;
 
     public User(long telegramId, String firstName, String lastName) {
         this.telegramId = telegramId;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.lastmodified = null;
+
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "id=" + telegramId +
+                "telegramId=" + telegramId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", lastTrack=" + lastmodified +
+                ", lastModified='" + lastModified + '\'' +
                 '}';
     }
 
@@ -61,11 +59,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Date getLastmodified() {
-        return lastmodified;
+    public String getLastModified() {
+        return lastModified;
     }
 
-    public void setLastmodified(Date lastmodified) {
-        this.lastmodified = lastmodified;
+    public void setLastModified(String lastModified) {
+        this.lastModified = lastModified;
     }
 }

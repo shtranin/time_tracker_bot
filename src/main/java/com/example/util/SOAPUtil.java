@@ -161,6 +161,8 @@ public class SOAPUtil {
 
         SOAPElement itemSoap = actionSoap.addChildElement("arg0");
 
+        SOAPElement soapBodyElem1 = itemSoap.addChildElement("telegramId");
+        soapBodyElem1.addTextNode(String.valueOf(user.getTelegramId()));
         SOAPElement soapBodyElem2 = itemSoap.addChildElement("firstName");
         soapBodyElem2.addTextNode(user.getFirstName());
         SOAPElement soapBodyElem3 = itemSoap.addChildElement("lastName");

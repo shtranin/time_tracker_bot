@@ -18,11 +18,13 @@ public class RouterWebServiceSoapImpl implements RouterWebServiceSoap {
 
     @Override
     public void sendExpiredUsersToLector(ExpiredUsers users) {
-            BotInitializator.getNotificationCommand().execute(users,lectorId);
+            BotInitializator.getNotificationCommand().execute(users, lectorId);
     }
 
     @Override
     public void sendExpiredUsersToTeamLead(ExpiredUsers users) {
             BotInitializator.getNotificationCommand().execute(users, users.getOwnerId());
     }
+
+
 }
