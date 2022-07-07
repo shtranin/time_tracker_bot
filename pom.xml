@@ -17,7 +17,6 @@
     </properties>
 
     <build>
-        <finalName>router</finalName>
         <defaultGoal>package</defaultGoal>
         <plugins>
             <plugin>
