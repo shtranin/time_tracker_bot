@@ -5,7 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "teamLeads")
+@Table(schema = "teamleads",name = "teamLeads")
 public class TeamLead {
     @Id
     private Long telegramId;
