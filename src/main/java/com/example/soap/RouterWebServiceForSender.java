@@ -2,11 +2,14 @@ package com.example.soap;
 
 import com.example.soap.model.ByteArray;
 import com.example.soap.model.ExpiredUsers;
+import jakarta.activation.DataHandler;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebResult;
 import jakarta.jws.WebService;
 import jakarta.jws.soap.SOAPBinding;
+import jakarta.xml.bind.annotation.XmlAttachmentRef;
+import jakarta.xml.soap.SOAPMessage;
 
 @WebService(name = "RouterWebServiceForSender")
 @SOAPBinding(style = SOAPBinding.Style.RPC,
@@ -16,7 +19,6 @@ public interface RouterWebServiceForSender {
 
 
     @WebMethod(action = "sendReports")
-    //@WebResult(name = "array", partName = "array")
-    void sendReports(@WebParam(name = "array") ByteArray bytes);
+    void sendReports(@WebParam(name = "file")@XmlAttachmentRef DataHandler handler);
 }
 

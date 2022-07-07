@@ -2,19 +2,9 @@ package com.example.soap.model;
 
 public class ByteArray {
     private String bytes;
-    private String fileName;
 
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public ByteArray(String bytes, String fileName) {
+    public ByteArray(String bytes) {
         this.bytes = bytes;
-        this.fileName = fileName;
     }
 
     public String getBytes() {
