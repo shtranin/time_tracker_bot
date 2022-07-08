@@ -24,7 +24,7 @@ public class SendReportsCommand {
             SendDocument document = new SendDocument();
             document.setDocument(new InputFile(file));
             document.setChatId(LectorId.getId());
-            document.setCaption("privet, konstantin");
+            document.setCaption("reports");
 
             bot.execute(document);
         } catch (TelegramApiException e) {

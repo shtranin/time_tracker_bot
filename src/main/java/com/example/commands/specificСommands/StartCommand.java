@@ -1,7 +1,9 @@
 package com.example.commands.specificСommands;
 
 import com.example.bot.Bot;
+import com.example.bot.LectorId;
 import com.example.commands.base.Command;
+import com.example.commands.base.Redirector;
 import com.example.services.withDB.UserService;
 import com.example.services.SendMessageService;
 
@@ -23,11 +25,15 @@ public class StartCommand implements Command {
 
     @Override
     public void execute(Update update) {
+
         Long userId = Bot.getPlayerIdFromUpdate(update);
-        String command = "start command";
-        sendMessageService.sendMessage(userId, command);
 
-        userService.registerUser(update);
-
+        if (userId.equals(LectorId.getId())) {
+            Redirector.redirect("/admin", update);
+        } else {
+            String command = "Вы были успешно зарегистрированы";
+            sendMessageService.sendMessage(userId, command);
+            userService.registerUser(update);
+        }
     }
 }
