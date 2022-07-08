@@ -22,33 +22,33 @@ import java.util.Properties;
 
 public class SoapClientForTeamService {
 
-    private static String teamSoapEndpointUrl;
-    private static String uriCreateGroup;
-    private static String uriCreateUser;
-    private static String uriUsersNotInGroup;
-    private static String uriAddUser;
-    private static String uriRemoveGroupByTeamLeadId;
-    private static String uriGetGroupIdByUserId;
-    private static String uriUsersNotTeamleads;
+    private static final String teamSoapEndpointUrl = "http://localhost:8085/team-service-1.0/service/router";
+    private static final String uriCreateGroup = "http://endpoints.teamservice.com/RouterService/createGroupRequest";
+    private static final String uriCreateUser = "http://endpoints.teamservice.com/RouterService/createUser";
+    private static final String uriUsersNotInGroup = "http://endpoints.teamservice.com/RouterService/usersNotInGroupResponse";
+    private static final String uriAddUser = "http://endpoints.teamservice.com/RouterService/addUser";
+    private static final String uriRemoveGroupByTeamLeadId = "http://endpoints.teamservice.com/RouterService/removeByTeamLeadId";
+    private static final String uriGetGroupIdByUserId = "http://endpoints.teamservice.com/RouterService/getGroupIdByTeamleadIdResponse";
+    private static final String uriUsersNotTeamleads = "http://endpoints.teamservice.com/RouterService/notTeamleads";
 
 
 
     public SoapClientForTeamService() {
-        try (InputStream is = this.getClass().getClassLoader().getResourceAsStream("properties\\connection.properties")) {
-            Properties props = new Properties();
-            props.load(is);
-            teamSoapEndpointUrl = props.getProperty("team.url");
-            uriCreateGroup = props.getProperty("team.action.createGroup");
-            uriCreateUser = props.getProperty("team.action.createUser");
-            uriUsersNotInGroup = props.getProperty("team.action.usersNotInGroup");
-            uriAddUser = props.getProperty("team.action.addUser");
-            uriRemoveGroupByTeamLeadId = props.getProperty("team.action.removeByTeamLeadId");
-            uriGetGroupIdByUserId = props.getProperty("team.action.getGroupByByUserId");
-            uriUsersNotTeamleads = props.getProperty("team.action.usersNotTeamleads");
-
-        } catch (IOException e) {
-            throw new IllegalStateException("Invalid config file");
-        }
+//        try (InputStream is = this.getClass().getClassLoader().getResourceAsStream("properties\\connection.properties")) {
+//            Properties props = new Properties();
+//            props.load(is);
+//            teamSoapEndpointUrl = props.getProperty("team.url");
+//            uriCreateGroup = props.getProperty("team.action.createGroup");
+//            uriCreateUser = props.getProperty("team.action.createUser");
+//            uriUsersNotInGroup = props.getProperty("team.action.usersNotInGroup");
+//            uriAddUser = props.getProperty("team.action.addUser");
+//            uriRemoveGroupByTeamLeadId = props.getProperty("team.action.removeByTeamLeadId");
+//            uriGetGroupIdByUserId = props.getProperty("team.action.getGroupByByUserId");
+//            uriUsersNotTeamleads = props.getProperty("team.action.usersNotTeamleads");
+//
+//        } catch (IOException e) {
+//            throw new IllegalStateException("Invalid config file");
+//        }
     }
     public void createGroup(Group group) {
 
@@ -109,7 +109,7 @@ public class SoapClientForTeamService {
           //  System.out.println("Response SOAP Message:");
            // soapRequest.writeTo(System.out);
 
-           SOAPMessage soapResponse = soapConnection.call(soapRequest, "http://82.146.35.247:8085/team-service-1.0/service/router");
+           SOAPMessage soapResponse = soapConnection.call(soapRequest, teamSoapEndpointUrl);
             System.out.println("Request SOAP Message");
             soapResponse.writeTo(System.out);
            group = parseGroup(soapResponse);
@@ -172,7 +172,7 @@ public class SoapClientForTeamService {
             System.out.println("Response SOAP Message:");
             soapRequest.writeTo(System.out);
             System.out.println("\n\n");
-            SOAPMessage soapResponse = soapConnection.call(soapRequest, "http://82.146.35.247:8085/team-service-1.0/service/router");
+            SOAPMessage soapResponse = soapConnection.call(soapRequest, teamSoapEndpointUrl);
 
             soapResponse.writeTo(System.out);
             System.out.println("\n\n");
