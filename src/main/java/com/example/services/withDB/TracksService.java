@@ -26,7 +26,7 @@ public class TracksService {
 
     public void sendTrack(Track track) {
         try {
-            URL url = new URL("http://82.146.35.247:8085/accountant-service-1.0//tracks");
+            URL url = new URL("http://localhost:8085/accountant-service-1.0//tracks");
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setConnectTimeout(900000000);
@@ -51,7 +51,7 @@ public class TracksService {
     public List<Track> getTodayTracks(Long userId) {
         List<Track> tracks;
         try {
-            URL url = new URL("http://82.146.35.247:8085/accountant-service-1.0//tracks?userId=" + userId);
+            URL url = new URL("http://localhost:8085/accountant-service-1.0//tracks?userId=" + userId);
             connection = (HttpURLConnection) url.openConnection();
             tracks = new ArrayList<>();
             connection.setRequestMethod("GET");
@@ -84,7 +84,7 @@ public class TracksService {
 
     public void removeTrackById(int trackId) {
         try {
-            URL url = new URL("http://82.146.35.247:8085/accountant-service-1.0//tracks?trackId=" + trackId);
+            URL url = new URL("http://localhost:8085/accountant-service-1.0//tracks?trackId=" + trackId);
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("DELETE");
             connection.setConnectTimeout(5000);
