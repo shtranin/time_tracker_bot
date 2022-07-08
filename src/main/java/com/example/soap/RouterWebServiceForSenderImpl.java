@@ -1,10 +1,8 @@
 package com.example.soap;
 
 import com.example.bot.BotInitializator;
-import com.example.soap.model.ByteArray;
 import jakarta.activation.DataHandler;
 import jakarta.jws.WebService;
-import jakarta.xml.soap.SOAPMessage;
 
 import java.io.*;
 

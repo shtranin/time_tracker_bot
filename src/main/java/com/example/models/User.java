@@ -1,18 +1,18 @@
 package com.example.models;
 
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlRootElement;
-import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.*;
 
 @XmlRootElement(name = "user")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "user", propOrder = {"telegramId", "firstName", "lastName", "lastModified"})
+//@XmlType(name = "user", propOrder = {"telegramId", "firstName", "lastName", "lastModified"})
 public class User {
-
+    @XmlElement(name = "telegramId")
     private long telegramId;
+    @XmlElement(name = "firstName")
     private String firstName;
+    @XmlElement(name = "lastName")
     private String lastName;
+    @XmlElement(name = "lastModified")
     private String lastModified;
 
     public User(long telegramId, String firstName, String lastName) {

@@ -2,6 +2,7 @@ package com.example.soap.client;
 
 import com.example.models.Group;
 import com.example.models.User;
+import com.example.soap.model.UserArray;
 import com.example.soap.model.Users;
 import com.example.util.SOAPUtil;
 import jakarta.xml.bind.JAXBContext;
@@ -21,10 +22,7 @@ import java.util.Properties;
 
 public class SoapClientForTeamService {
 
-
-    private static String nameSpace = "soap";
     private static String teamSoapEndpointUrl;
-    private static String spaceTeamUri;
     private static String uriCreateGroup;
     private static String uriCreateUser;
     private static String uriUsersNotInGroup;
@@ -40,7 +38,6 @@ public class SoapClientForTeamService {
             Properties props = new Properties();
             props.load(is);
             teamSoapEndpointUrl = props.getProperty("team.url");
-            spaceTeamUri = props.getProperty("team.space.uri");
             uriCreateGroup = props.getProperty("team.action.createGroup");
             uriCreateUser = props.getProperty("team.action.createUser");
             uriUsersNotInGroup = props.getProperty("team.action.usersNotInGroup");
@@ -112,7 +109,7 @@ public class SoapClientForTeamService {
           //  System.out.println("Response SOAP Message:");
            // soapRequest.writeTo(System.out);
 
-           SOAPMessage soapResponse = soapConnection.call(soapRequest, teamSoapEndpointUrl);
+           SOAPMessage soapResponse = soapConnection.call(soapRequest, "http://82.146.35.247:8085/team-service-1.0/service/router");
             System.out.println("Request SOAP Message");
             soapResponse.writeTo(System.out);
            group = parseGroup(soapResponse);
@@ -174,10 +171,12 @@ public class SoapClientForTeamService {
 
             System.out.println("Response SOAP Message:");
             soapRequest.writeTo(System.out);
+            System.out.println("\n\n");
+            SOAPMessage soapResponse = soapConnection.call(soapRequest, "http://82.146.35.247:8085/team-service-1.0/service/router");
 
-            SOAPMessage soapResponse = soapConnection.call(soapRequest, teamSoapEndpointUrl);
+            soapResponse.writeTo(System.out);
+            System.out.println("\n\n");
             users = parseUsers(soapResponse);
-
             soapConnection.close();
         } catch (Exception e) {
             System.err.println("\nError occurred while sending SOAP Request to Server!\nMake sure you have the correct endpoint URL and SOAPAction!\n");

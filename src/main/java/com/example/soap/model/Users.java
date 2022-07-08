@@ -9,11 +9,16 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "users")
+@XmlRootElement(name = "Users")
 public class Users {
+    @XmlElement(name="user")
     List<User> userArray;
 
     public Users() {
+    }
+
+    public Users(List<User> userArray) {
+        this.userArray = userArray;
     }
 
     public List<User> getUserArray() {
