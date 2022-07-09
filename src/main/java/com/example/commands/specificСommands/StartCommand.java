@@ -34,6 +34,7 @@ public class StartCommand implements Command {
             String command = "Вы были успешно зарегистрированы";
             sendMessageService.sendMessage(userId, command);
             userService.registerUser(update);
+            Redirector.redirect("/menu",update);
         }
     }
 }
