@@ -21,6 +21,7 @@ public class NotificationCommand {
         String introduceLine;
         if(receiverId.equals(LectorId.getId())){
             introduceLine = "Разработчики, которые не трекали время 3 или более дней:\n";
+
         }else{
             introduceLine = "Разработчики, которые сегодня не трекали время:\n";
         }
